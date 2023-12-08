@@ -11,29 +11,17 @@ def part1(instr, nodes_dict, start="AAA", ptwo=False):
     current_instr = 0
 
     while (not ptwo and current != "ZZZ") or (ptwo and current[-1] != "Z"):
-        match instr[current_instr]:
-            case "L":
-                current = nodes_dict[current][0]
-                pass
-            case "R":
-                current = nodes_dict[current][1]
-                pass
-            case _:
-                print("ERROR!")
-                return -1
+        if instr[current_instr] == "L":
+            current = nodes_dict[current][0]
+        else:
+            current = nodes_dict[current][1]
         steps += 1
         current_instr = (current_instr + 1) % len(instr)
     return steps
 
 
 def part2(instr, nodes_dict):
-    status = []
-
-    for n in nodes_dict.keys():
-        if not n[-1] == "A":
-            continue
-        status.append(n)
-
+    status = list(filter(lambda x: x[-1] == "A", nodes_dict.keys()))
     return math.lcm(
         *list(map(lambda x: part1(instr, nodes_dict, start=x, ptwo=True), status))
     )
